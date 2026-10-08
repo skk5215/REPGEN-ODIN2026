@@ -19,7 +19,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, default=Path("weights"))
     args = parser.parse_args()
-    release = json.loads(Path(__file__).with_name("release.json").read_text())
+    release = json.loads((Path(__file__).resolve().parents[1] / "configs/release.json").read_text())
     output = args.output.resolve()
     if output.exists() and any(output.iterdir()):
         raise SystemExit("Choose an empty output directory.")
@@ -44,7 +44,7 @@ def main():
         if not path.is_relative_to(output) or sha256(path) != item["sha256"]:
             raise SystemExit("Extracted file checksum mismatch.")
     archive.unlink()
-    print("Weights verified. Run: python run_case.py --help")
+    print("Weights verified. Run: python scripts/run_case.py --help")
 
 
 if __name__ == "__main__":
