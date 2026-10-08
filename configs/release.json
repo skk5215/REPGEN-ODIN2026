@@ -1,6 +1,5 @@
 {
   "release": "v1.0.0",
-  "submitted_method": "R248",
   "weights": {
     "url": "https://github.com/skk5215/REPGEN-ODIN2026/releases/download/v1.0.0/repgen-inference-weights-v1.0.0.tar.gz",
     "sha256": "2ce5eeb32ea4d639f40a4f878b51648f7b2b63127bb14820ec750a7ab3fb90c4",
@@ -17,6 +16,6 @@
   "licences": {
     "original_code": "CC-BY-NC-4.0",
     "weights": "CC-BY-NC-SA-4.0",
-    "third_party": "See THIRD_PARTY.md"
+    "third_party": "See licenses/THIRD_PARTY.md"
   }
 }
