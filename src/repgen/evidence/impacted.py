@@ -20,11 +20,11 @@ import torch
 from torch import nn
 import torch.nn.functional as F
 
-import weak_runtime
+from . import models as weak_runtime
 
 
 MODEL_ROOT = weak_runtime.MODEL_ROOT
-CONTRACT_PATH = Path(__file__).with_name("r225_impacted_runtime_contract.json")
+CONTRACT_PATH = Path(__file__).resolve().parents[3] / "configs/impacted_consensus.json"
 HIGH_RISK_FDIS = tuple(
     f"{quadrant}{slot}" for quadrant in "1234" for slot in (3, 7, 8)
 )
