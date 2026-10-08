@@ -5,7 +5,7 @@ import os
 
 import torch
 
-from t4_mamba_fallback import install
+from .mamba_reference import install
 
 
 print(json.dumps({"event": "r237_mamba_fallback", **install()}, sort_keys=True), flush=True)
