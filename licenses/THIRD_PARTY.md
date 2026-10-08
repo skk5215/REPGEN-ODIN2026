@@ -18,5 +18,5 @@ class preserves the submitted loader name and uses nnU-Net's network builder.
 
 Training data have separate terms: ToothFairy3 is CC BY-NC-SA 4.0 and DOLCHID
 version 1 is CC BY 4.0. Neither dataset is redistributed. The licence selected
-for our trained weights is declared in `LICENSE_WEIGHTS`; it is not a claim
+for our trained weights is declared in `licenses/WEIGHTS.txt`; it is not a claim
 that dataset licence terms automatically determine the legal status of weights.

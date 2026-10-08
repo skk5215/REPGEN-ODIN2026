@@ -10,7 +10,7 @@ import resource
 from pathlib import Path
 from typing import Any
 
-from task1_runtime import execute_case
+from repgen.pipeline import execute_case
 
 
 INPUT_PATH = Path("/input")
