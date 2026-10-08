@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import copy
-import importlib.util
 import json
 import os
 import shutil
@@ -15,27 +14,14 @@ from typing import Any, Iterable
 
 import numpy as np
 
-try:
-    import r165_base_runtime as BASE
-except ModuleNotFoundError:
-    source = (
-        Path(__file__).resolve().parents[1]
-        / "toothfairy4_task1_r165_submission"
-        / "task1_runtime.py"
-    )
-    spec = importlib.util.spec_from_file_location("r178_r165_base_runtime", source)
-    if spec is None or spec.loader is None:
-        raise ImportError(source)
-    BASE = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(BASE)
-
-import weak_runtime
-import r212_bone_atrophy_contract as R212_CONTRACT
-import r212_bone_atrophy_runtime as R212_RUNTIME
-import r225_impacted_runtime as R225_IMPACTED
-import r230_implant_relation_runtime as R230_IMPLANT
-import r233_tooth_absence_runtime as R233_ABSENCE
-import r238_evidence_grounded_writer as R238_WRITER
+from . import anatomy as BASE
+from .evidence import models as weak_runtime
+from .evidence import bone_contract as R212_CONTRACT
+from .evidence import bone_atrophy as R212_RUNTIME
+from .evidence import impacted as R225_IMPACTED
+from .evidence import implants as R230_IMPLANT
+from .evidence import tooth_occupancy as R233_ABSENCE
+from .reporting import writer as R238_WRITER
 
 
 NUM_SEGMENTATION_HEADS = 47
@@ -332,7 +318,8 @@ def run_segmentation(input_file: Path, output_dir: Path) -> dict[str, Any]:
     )
     command = [
         sys.executable,
-        "/opt/app/nnunet_predict_t4.py",
+        "-m",
+        "repgen.compat.predict",
         "-i",
         str(input_file.parent),
         "-o",
