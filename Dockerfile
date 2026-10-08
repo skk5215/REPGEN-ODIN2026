@@ -13,7 +13,7 @@ RUN git init /opt/backbone \
 COPY requirements.txt /tmp/requirements.txt
 RUN python -m pip install --no-cache-dir -r /tmp/requirements.txt \
     && python -m pip install --no-cache-dir --no-deps -e /opt/backbone
-COPY serialization_compat.py /opt/backbone/nnunetv2/training/nnUNetTrainer/variants/competitions/toothfairy3_r142_fpguard.py
+COPY src/repgen/compat/checkpoint_loader.py /opt/backbone/nnunetv2/training/nnUNetTrainer/variants/competitions/repgen_inference.py
 RUN rm -rf /opt/backbone/.git
 
 FROM --platform=linux/amd64 pytorch/pytorch:2.5.1-cuda12.4-cudnn9-runtime
@@ -26,9 +26,11 @@ ENV PYTHONUNBUFFERED=1 PYTHONDONTWRITEBYTECODE=1 \
     TRITON_CACHE_DIR=/tmp/triton NUMBA_CACHE_DIR=/tmp/numba MPLCONFIGDIR=/tmp/matplotlib \
     OMP_NUM_THREADS=4 MKL_NUM_THREADS=4 nnUNet_compile=false \
     nnUNet_raw=/tmp/nnunet_raw nnUNet_preprocessed=/tmp/nnunet_preprocessed \
-    nnUNet_results=/opt/ml/model/nnUNet_results PYTHONPATH=/opt/app:/opt/backbone
+    nnUNet_results=/opt/ml/model/nnUNet_results PYTHONPATH=/opt/app/src:/opt/backbone
 
 WORKDIR /opt/app
-COPY --chown=user:user *.py *.json /opt/app/
+COPY --chown=user:user src /opt/app/src
+COPY --chown=user:user configs /opt/app/configs
+COPY --chown=user:user inference.py /opt/app/inference.py
 USER user
 ENTRYPOINT ["python", "/opt/app/inference.py"]

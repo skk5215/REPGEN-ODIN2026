@@ -5,7 +5,7 @@
 [![ODIN2026](https://img.shields.io/badge/ODIN2026-Task%201-2563eb)](https://odin2026.grand-challenge.org/)
 [![Python](https://img.shields.io/badge/Python-3.11%2B-3776ab)](https://www.python.org/)
 [![Code License](https://img.shields.io/badge/Code-CC%20BY--NC%204.0-16803d)](LICENSE)
-[![Weights License](https://img.shields.io/badge/Weights-CC%20BY--NC--SA%204.0-16803d)](LICENSE_WEIGHTS)
+[![Weights License](https://img.shields.io/badge/Weights-CC%20BY--NC--SA%204.0-16803d)](licenses/WEIGHTS.txt)
 
 This repository contains the inference implementation of the final **R248**
 submission to **ODIN2026 Task 1: ToothFairy4**. One CBCT volume is converted
@@ -13,7 +13,7 @@ into structured anatomical evidence and an English diagnostic report.
 
 **[Download weights](https://github.com/skk5215/REPGEN-ODIN2026/releases/tag/v1.0.0)**
 &nbsp; | &nbsp; [Challenge](https://odin2026.grand-challenge.org/)
-&nbsp; | &nbsp; [Third-party attribution](THIRD_PARTY.md)
+&nbsp; | &nbsp; [Third-party attribution](licenses/THIRD_PARTY.md)
 
 ## Pipeline
 
@@ -37,7 +37,7 @@ used during report generation.
 ```bash
 git clone https://github.com/skk5215/REPGEN-ODIN2026.git
 cd REPGEN-ODIN2026
-python get_weights.py --output weights
+python scripts/download_weights.py --output weights
 ```
 
 The download is checksum-verified. It contains the required FP32 tensors,
@@ -58,7 +58,7 @@ and NVIDIA Container Toolkit is required for GPU inference.
 ### 3. Run one local scan
 
 ```bash
-python run_case.py /path/to/scan.mha --weights weights --output output --gpu 0
+python scripts/run_case.py /path/to/scan.mha --weights weights --output output --gpu 0
 ```
 
 The helper creates the challenge input structure and runs the container with
@@ -84,7 +84,7 @@ network access disabled. The CBCT stays local. Output is written to
 The original R248 package was validated using a forced T4-compatible execution
 path on an A100. A physical-T4 latency measurement is not claimed. This source
 release repackages the inference weights and retains the submitted numerical
-precision; its validation details are recorded in `release.json`.
+precision; its validation details are recorded in `configs/release.json`.
 
 <details>
 <summary><strong>Model components</strong></summary>
@@ -102,6 +102,22 @@ separately and all required parameters are included in the release asset.
 
 </details>
 
+## Repository layout
+
+```text
+inference.py             Challenge entry point
+Dockerfile               Reproducible inference environment
+src/repgen/
+  anatomy.py             Segmentation evidence and geometry
+  pipeline.py            End-to-end inference
+  evidence/              Finding models and anatomical routing
+  reporting/             Evidence-to-report writer
+  compat/                GPU and checkpoint compatibility
+configs/                 Runtime contracts and release metadata
+scripts/                 Weight download and local execution
+licenses/                Weight licence and third-party attribution
+```
+
 ## Scope
 
 This is a public inference release. Training data, patient examples, clinical
@@ -118,7 +134,7 @@ original terms; the complete pipeline is for non-commercial use.
 The anatomical backbone builds on the published
 [U-Mamba2 implementation](https://github.com/zhiqin1998/U-Mamba2), pinned to
 `2046d29785087b656ca69fa02dd40e43e69cfb42`, within
-[nnU-Net](https://github.com/MIC-DKFZ/nnUNet). See [THIRD_PARTY.md](THIRD_PARTY.md).
+[nnU-Net](https://github.com/MIC-DKFZ/nnUNet). See [THIRD_PARTY.md](licenses/THIRD_PARTY.md).
 
 External training sources were [ToothFairy3](https://ditto.ing.unimore.it/toothfairy3/)
 and [DOLCHID](https://doi.org/10.6084/m9.figshare.30156622.v1), in addition to
